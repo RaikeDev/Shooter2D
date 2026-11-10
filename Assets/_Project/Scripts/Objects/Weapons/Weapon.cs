@@ -9,7 +9,7 @@ namespace _Project.Scripts.Objects
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            var target = other.GetComponentInParent<Damageable>();
+            var target = other.GetComponentInParent<Damage>();
 
             if (target != null)
                 target.TakeDamage(damage);

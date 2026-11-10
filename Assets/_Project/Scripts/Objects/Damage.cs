@@ -1,10 +1,10 @@
 namespace _Project.Scripts.Objects
 {
     using UnityEngine;
-    public class Damageable : MonoBehaviour
+    public class Damage : MonoBehaviour
     {
         [SerializeField, Min(1)]
-        private int maxHealth = 100;
+        private int maxHealth;
 
         public int Health { get; private set; }
         public bool IsDead { get; private set; }

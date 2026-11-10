@@ -41,7 +41,4 @@ public class PlayerMovement : MonoBehaviour
     {
         moveAction.action.Disable();
     }
-
-
-
 }

@@ -15,9 +15,9 @@ namespace _Project.Scripts.Objects
                 target.TakeDamage(damage);
         }
         
-        public virtual void Attack()
+        public virtual void Attack(Vector2 direction)
         {
-            //анимация атаки
+            Debug.DrawRay(transform.position, direction * 5f, Color.green, 0.5f);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace _Project.Scripts.Objects
     {
         [SerializeField, Min(1)] private int maxBullet;
         private int bulletsCount;
-        [SerializeField] private Bullet bulletPrefab; // Префаб пули с компонентом Rigidbody2D
+        [SerializeField] private Bullet bulletPrefab;
         [SerializeField] private Transform firePoint;
 
         public void Start()
@@ -18,6 +18,7 @@ namespace _Project.Scripts.Objects
             if (bulletsCount > 0)
             {
                 Bullet bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+                bullet.SetDamage(DamageAmount);
                 Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
                 rb.AddForce(firePoint.right * bulletPrefab.getSpeed(), ForceMode2D.Impulse);
                 bulletsCount--;
@@ -29,6 +30,12 @@ namespace _Project.Scripts.Objects
         }
 
         public void reload()
+        {
+            if (IsInvoking(nameof(FinishReload))) return;
+            Invoke(nameof(FinishReload), 2f);
+        }
+
+        private void FinishReload()
         {
             bulletsCount = maxBullet;
         }

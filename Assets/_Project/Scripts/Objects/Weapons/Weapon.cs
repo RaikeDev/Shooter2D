@@ -7,7 +7,7 @@ namespace _Project.Scripts.Objects
     public class Weapon : MonoBehaviour
     {
         [SerializeField, Min(1)] private int damage;
-
+        protected int DamageAmount => damage;
         private void OnTriggerEnter2D(Collider2D other)
         {
             var target = other.GetComponentInParent<Damage>();

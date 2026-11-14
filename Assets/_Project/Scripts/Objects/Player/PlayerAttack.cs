@@ -43,10 +43,8 @@ namespace _Project.Scripts.Objects.Player
             
             aimPivot.rotation = Quaternion.Euler(0f, 0f, angle);
             
-            if (attackAction != null && weapon != null && attackAction.action.WasPressedThisFrame())
-            {
-                weapon.Attack(direction);
-            }
+            if (attackAction ==null || weapon == null) return;
+            if (attackAction.action.WasPressedThisFrame() || (weapon is MachineGun && attackAction.action.IsPressed())) weapon.Attack(direction);
         }
     }
 }

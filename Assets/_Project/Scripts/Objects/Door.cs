@@ -9,18 +9,25 @@ namespace _Project.Scripts.Objects
         [SerializeField] private Sprite openSprite;
         [SerializeField] private Sprite closedSprite;
         
+        private void Awake()
+        {
+            if (closedSprite == null && doorSprite != null)
+                closedSprite = doorSprite.sprite;
+        }
+
         public void openDoor()
         {
             blockingCollider.enabled = false;
-            doorSprite.enabled = false;
-            //doorSprite.sprite = openSprite; раскоментить когда будут спрайты
+            doorSprite.enabled = openSprite != null;
+            if (openSprite != null)
+                doorSprite.sprite = openSprite;
         }
 
         public void closeDoor()
         {
             blockingCollider.enabled = true;
             doorSprite.enabled = true;
-            //doorSprite.sprite = closedSprite; раскоментить когда будут спрайты
+            doorSprite.sprite = closedSprite;
         }
 
         public void ToggleDoor()

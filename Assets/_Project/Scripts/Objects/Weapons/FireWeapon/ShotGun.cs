@@ -1,6 +1,6 @@
 namespace _Project.Scripts.Objects
 {
-    public class MachineGun : Weapon
+    public class ShotGun : FireWeapon
     {
         
     }

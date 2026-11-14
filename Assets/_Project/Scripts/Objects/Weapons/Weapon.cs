@@ -1,11 +1,12 @@
+using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace _Project.Scripts.Objects
 {
     public class Weapon : MonoBehaviour
     {
-        [SerializeField, Min(1)]
-        private int damage;
+        [SerializeField, Min(1)] private int damage;
 
         private void OnTriggerEnter2D(Collider2D other)
         {

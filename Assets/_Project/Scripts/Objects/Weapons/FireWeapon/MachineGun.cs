@@ -1,6 +1,8 @@
+using System;
+
 namespace _Project.Scripts.Objects
 {
-    public class Pistol : Weapon
+    public class MachineGun : FireWeapon
     {
         
     }

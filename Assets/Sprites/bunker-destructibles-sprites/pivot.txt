@@ -1,0 +1,3 @@
+All frames: 64 × 64 pixels.
+Ground contact at x=32, y=56 from the top.
+Unity custom pivot: X=0.5, Y=0.125.

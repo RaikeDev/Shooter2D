@@ -8,6 +8,7 @@ namespace _Project.Scripts.Objects.Player
     {
         [SerializeField] private InputActionReference attackAction;
         [SerializeField] private Weapon weapon;
+        [SerializeField] private GameObject axeVisual;
         [SerializeField] private Camera aimCamera;
         [SerializeField] private Transform aimPivot;
 
@@ -25,6 +26,10 @@ namespace _Project.Scripts.Objects.Player
 
         private void Update()
         {
+            bool showAxe = weapon is Axe;
+            if (axeVisual != null && axeVisual.activeSelf != showAxe)
+                axeVisual.SetActive(showAxe);
+            
             if (Mouse.current == null || aimCamera == null || aimPivot == null) return;
             
             Vector2 mousePosition = Mouse.current.position.ReadValue();
@@ -46,5 +51,23 @@ namespace _Project.Scripts.Objects.Player
             if (attackAction ==null || weapon == null) return;
             if (attackAction.action.WasPressedThisFrame() || (weapon is MachineGun && attackAction.action.IsPressed())) weapon.Attack(direction);
         }
+        
+        private void Start()
+        {
+            EquipWeapon(weapon);
+        }
+
+        public void EquipWeapon(Weapon newWeapon)
+        {
+            if (weapon is FireWeapon oldGun)
+                oldGun.SetEquipped(false);
+
+            weapon = newWeapon;
+
+            if (weapon is FireWeapon newGun)
+                newGun.SetEquipped(true);
+        }
+        
+        public Weapon CurrentWeapon => weapon;
     }
 }

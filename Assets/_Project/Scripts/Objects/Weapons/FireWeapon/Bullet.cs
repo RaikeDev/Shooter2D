@@ -18,7 +18,6 @@ namespace _Project.Scripts.Objects
         public void Awake()
         {
             speed = 100;
-            Destroy(gameObject, 2f);
         }
 
         public int getSpeed()

@@ -38,10 +38,43 @@ namespace _Project.Scripts.Objects.Player
 
         private void Update()
         {
-            if (interaction != null && nearDoor != null && interaction.action.WasPressedThisFrame())
+            if (interaction == null || !interaction.action.WasPressedThisFrame())
+                return;
+
+            Vector2 playerPosition = transform.position;
+            WeaponPickup nearestPickup = null;
+            float nearestDistance = float.PositiveInfinity;
+
+            foreach (Collider2D collider in Physics2D.OverlapCircleAll(playerPosition, 0.5f))
             {
-                nearDoor.ToggleDoor();
+                WeaponPickup pickup = collider.GetComponentInParent<WeaponPickup>();
+                if (pickup == null || pickup.Weapon == null)
+                    continue;
+
+                float distance = Vector2.Distance(playerPosition, pickup.transform.position);
+                if (distance < nearestDistance)
+                {
+                    nearestPickup = pickup;
+                    nearestDistance = distance;
+                }
             }
+            
+            if (nearDoor != null) nearDoor.ToggleDoor();
+            if (nearestPickup == null) return;
+            
+            PlayerAttack playerAttack = GetComponent<PlayerAttack>();
+            FireWeapon newWeapon = nearestPickup.Weapon;
+            FireWeapon oldWeapon = playerAttack.CurrentWeapon as FireWeapon;
+
+            if (oldWeapon == newWeapon)
+                return;
+
+            playerAttack.EquipWeapon(newWeapon);
+
+            if (oldWeapon != null)
+                nearestPickup.SetWeapon(oldWeapon);
+            else
+                Destroy(nearestPickup.gameObject);
         }
     }
 }

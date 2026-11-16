@@ -58,14 +58,15 @@ namespace _Project.Scripts.Objects
         }
         protected virtual void Shoot()
         {
-            SpawnBullet(3f);
+            SpawnBullet(0f);
         }
 
         protected void SpawnBullet(float angle, float lifetime = 2f)
         {
             Quaternion rotation = firePoint.rotation * Quaternion.Euler(0f, 0f, angle);
             Vector3 spawnPosition = firePoint.TransformPoint(muzzleOffset);
-            Bullet bullet = Instantiate(bulletPrefab, spawnPosition, rotation);            Collider2D shooterCollider = GetComponentInParent<Collider2D>();
+            Bullet bullet = Instantiate(bulletPrefab, spawnPosition, rotation);
+            Collider2D shooterCollider = GetComponentInParent<Collider2D>();
             Collider2D bulletCollider = bullet.GetComponent<Collider2D>();
             if (shooterCollider != null && bulletCollider != null) Physics2D.IgnoreCollision(bulletCollider, shooterCollider);
             Destroy(bullet.gameObject, lifetime);

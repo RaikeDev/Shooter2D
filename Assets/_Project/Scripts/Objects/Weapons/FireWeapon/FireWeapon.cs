@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 namespace _Project.Scripts.Objects
 {
@@ -5,12 +6,16 @@ namespace _Project.Scripts.Objects
     {
         [SerializeField, Min(1)] private int maxBullet;
         private int bulletsCount;
+        [SerializeField, Min(0)] private int reserveAmmo;
         [SerializeField] private Bullet bulletPrefab;
         [SerializeField] private Transform firePoint;
         [SerializeField] private Vector2 muzzleOffset;
         [SerializeField] private SpriteRenderer weaponSpriteRenderer;
         [SerializeField] private Sprite pickupSprite;
         public Sprite PickupSprite => pickupSprite;
+        public int BulletsCount => bulletsCount;
+        public int MaxBullet => maxBullet;
+        public int ReserveAmmo => reserveAmmo;
         
         public void SetEquipped(bool equipped)
         {
@@ -30,6 +35,7 @@ namespace _Project.Scripts.Objects
 
         public void fire()
         {
+            if (IsInvoking(nameof(FinishReload))) return;
             if (bulletsCount > 0)
             {
                 Shoot();
@@ -43,13 +49,17 @@ namespace _Project.Scripts.Objects
 
         public void reload()
         {
+            if (reserveAmmo <= 0 || bulletsCount >= maxBullet) return;
             if (IsInvoking(nameof(FinishReload))) return;
             Invoke(nameof(FinishReload), 2f);
         }
 
         private void FinishReload()
         {
-            bulletsCount = maxBullet;
+            int missingAmmo = maxBullet - bulletsCount;
+            int loadedAmmo = Math.Min(reserveAmmo, missingAmmo);
+            bulletsCount += loadedAmmo;
+            reserveAmmo -=  loadedAmmo;
         }
         
         public override void Attack(Vector2 direction)

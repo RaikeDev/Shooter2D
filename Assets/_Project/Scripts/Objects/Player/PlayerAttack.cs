@@ -11,15 +11,18 @@ namespace _Project.Scripts.Objects.Player
         [SerializeField] private GameObject axeVisual;
         [SerializeField] private Camera aimCamera;
         [SerializeField] private Transform aimPivot;
+        [SerializeField] private InputActionReference reloadAction;
 
         private void OnEnable()
         {
+            reloadAction?.action.Enable();
             if (attackAction != null)
                 attackAction.action.Enable();
         }
 
         private void OnDisable()
         {
+            reloadAction?.action.Disable();
             if (attackAction != null)
                 attackAction.action.Disable();
         }
@@ -29,6 +32,13 @@ namespace _Project.Scripts.Objects.Player
             bool showAxe = weapon is Axe;
             if (axeVisual != null && axeVisual.activeSelf != showAxe)
                 axeVisual.SetActive(showAxe);
+            
+            if (weapon is FireWeapon gun &&
+                reloadAction != null &&
+                reloadAction.action.WasPressedThisFrame())
+            {
+                gun.reload();
+            }
             
             if (Mouse.current == null || aimCamera == null || aimPivot == null) return;
             

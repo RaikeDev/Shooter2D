@@ -1,0 +1,143 @@
+{
+  "standard": "humanoid-topdown",
+  "version": "1.0.0",
+  "scope": "All humanoid character assets in this workspace",
+  "active_camera_profile": "../sibir-hero-v4-oblique/camera.json",
+  "camera_note": "The camera and screen formulas below retain historical overhead defaults for v3. Since 2026-11-15 active art uses project_camera with the oblique profile above; topology and anatomical solver are unchanged.",
+  "coordinates": {
+    "units": "B = distance between shoulder joint centers",
+    "X": "character forward",
+    "Y": "character left",
+    "Z": "up",
+    "screen_u": "origin_u + pixels_per_B * X",
+    "screen_v": "origin_v - pixels_per_B * Y"
+  },
+  "camera": {
+    "projection": "orthographic",
+    "view_direction": [
+      0,
+      0,
+      -1
+    ],
+    "perspective_scale": false
+  },
+  "root": {
+    "name": "root",
+    "position": [
+      0,
+      0,
+      0
+    ],
+    "purpose": "ground position; collider and export pivot; does not follow hat or sprite alpha bounds"
+  },
+  "joint_parents": {
+    "pelvis": "root",
+    "chest": "pelvis",
+    "neck": "chest",
+    "head": "neck",
+    "shoulder.L": "chest",
+    "elbow.L": "shoulder.L",
+    "wrist.L": "elbow.L",
+    "hand.L": "wrist.L",
+    "shoulder.R": "chest",
+    "elbow.R": "shoulder.R",
+    "wrist.R": "elbow.R",
+    "hand.R": "wrist.R",
+    "hip.L": "pelvis",
+    "knee.L": "hip.L",
+    "ankle.L": "knee.L",
+    "heel.L": "ankle.L",
+    "toe.L": "ankle.L",
+    "hip.R": "pelvis",
+    "knee.R": "hip.R",
+    "ankle.R": "knee.R",
+    "heel.R": "ankle.R",
+    "toe.R": "ankle.R"
+  },
+  "chains": {
+    "arm.L": [
+      "shoulder.L",
+      "elbow.L",
+      "wrist.L",
+      "hand.L"
+    ],
+    "arm.R": [
+      "shoulder.R",
+      "elbow.R",
+      "wrist.R",
+      "hand.R"
+    ],
+    "leg.L": [
+      "hip.L",
+      "knee.L",
+      "ankle.L"
+    ],
+    "leg.R": [
+      "hip.R",
+      "knee.R",
+      "ankle.R"
+    ]
+  },
+  "bone_fields_shared_by_sides": [
+    "upper_arm",
+    "forearm",
+    "hand",
+    "thigh",
+    "shin",
+    "foot"
+  ],
+  "item_sockets": {
+    "grip.L": {
+      "parent": "wrist.L",
+      "coordinate_frame": "hand"
+    },
+    "grip.R": {
+      "parent": "wrist.R",
+      "coordinate_frame": "hand"
+    }
+  },
+  "invariants": [
+    "One topology and solver; character differences are profiles, skins and action targets",
+    "Left and right anatomical bone lengths use the same profile fields",
+    "Bones never stretch to reach a wrist or foot target",
+    "Wrist, hand and equipped item share one consistent grip transform",
+    "One-handed actions do not force a mirrored support hand",
+    "Foot positions follow hip, knee, ankle and ground contact",
+    "Visibility is computed after the 3D pose; hidden anatomy is not moved to make it visible",
+    "The root remains the export pivot in all frames"
+  ],
+  "pixel_art": {
+    "native_canvas": [
+      96,
+      96
+    ],
+    "default_pixels_per_B": 22,
+    "pivot_pixels": [
+      48,
+      48
+    ],
+    "filter": "Point",
+    "alpha": [
+      0,
+      255
+    ],
+    "wear": "a few deliberate clusters; no noise, dithering or photo texture"
+  },
+  "implementation": "humanoid_rig.py",
+  "default_profile": "profiles/adult.json",
+  "base_locomotion_pose": {
+    "name": "ready",
+    "meaning": "gameplay ready pose, separate from relaxed axe transport",
+    "elbows": "down beside ribs, not flared",
+    "free_hand": "hanging beside hip",
+    "working_hand": "closed power grip",
+    "item_heading": "head and cutting edge forward"
+  },
+  "axe_transport_pose": {
+    "name": "low_carry",
+    "meaning": "relaxed one-handed transport",
+    "elbow": "low beside the body",
+    "working_hand": "closed around the wooden handle near the head, at the balance point of the specific axe",
+    "item_heading": "cutting edge down"
+  }
+}

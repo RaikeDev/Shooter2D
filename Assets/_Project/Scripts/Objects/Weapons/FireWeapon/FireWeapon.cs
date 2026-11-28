@@ -11,6 +11,7 @@ namespace _Project.Scripts.Objects
         [SerializeField] private SpriteRenderer weaponSpriteRenderer;
         [SerializeField] private Sprite pickupSprite;
         public Sprite PickupSprite => pickupSprite;
+        public SpriteRenderer EquippedVisual => weaponSpriteRenderer;
         
         public void SetEquipped(bool equipped)
         {

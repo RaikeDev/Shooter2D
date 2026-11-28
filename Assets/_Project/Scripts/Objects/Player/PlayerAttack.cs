@@ -1,6 +1,7 @@
 namespace _Project.Scripts.Objects.Player
 {
     using UnityEngine;
+    using Sibir128;
     using UnityEngine.InputSystem;
     using _Project.Scripts.Objects;
 
@@ -11,6 +12,24 @@ namespace _Project.Scripts.Objects.Player
         [SerializeField] private GameObject axeVisual;
         [SerializeField] private Camera aimCamera;
         [SerializeField] private Transform aimPivot;
+
+        private bool pickupFacing;
+        private Sibir128Character character;
+
+        public void SetPickupFacing(Vector2 direction)
+        {
+            pickupFacing = true;
+            character?.OverrideFacing(direction);
+            if (aimPivot != null)
+                aimPivot.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+        }
+
+        public void EndPickupFacing()
+        {
+            pickupFacing = false;
+            character?.ClearFacingOverride();
+            ShowEquippedVisual();
+        }
 
         private void OnEnable()
         {
@@ -30,6 +49,8 @@ namespace _Project.Scripts.Objects.Player
             if (axeVisual != null && axeVisual.activeSelf != showAxe)
                 axeVisual.SetActive(showAxe);
             
+            if (pickupFacing) return;
+
             if (Mouse.current == null || aimCamera == null || aimPivot == null) return;
             
             Vector2 mousePosition = Mouse.current.position.ReadValue();
@@ -52,6 +73,11 @@ namespace _Project.Scripts.Objects.Player
             if (attackAction.action.WasPressedThisFrame() || (weapon is MachineGun && attackAction.action.IsPressed())) weapon.Attack(direction);
         }
         
+        private void Awake()
+        {
+            character = GetComponent<Sibir128Character>();
+        }
+
         private void Start()
         {
             EquipWeapon(weapon);
@@ -64,8 +90,16 @@ namespace _Project.Scripts.Objects.Player
 
             weapon = newWeapon;
 
-            if (weapon is FireWeapon newGun)
-                newGun.SetEquipped(true);
+            if (!pickupFacing)
+                ShowEquippedVisual();
+        }
+
+        private void ShowEquippedVisual()
+        {
+            string look = weapon is Pistol ? "pistol" : "unarmed";
+            bool baked = character != null && character.SetEquipmentLook(look) && look == "pistol";
+            if (weapon is FireWeapon equippedGun)
+                equippedGun.SetEquipped(!baked);
         }
         
         public Weapon CurrentWeapon => weapon;

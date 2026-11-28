@@ -1,0 +1,9 @@
+{
+  "name": "adult",
+  "unit": "B = shoulder-joint separation",
+  "description": "Initial artistic adult profile; not population measurements",
+  "bones": {"upper_arm": 0.8, "forearm": 0.7, "hand": 0.5, "thigh": 1.15, "shin": 1.1, "foot": 0.65},
+  "widths": {"shoulder": 1.0, "hips": 0.55},
+  "heights": {"shoulder": 3.65, "hip": 2.1},
+  "limits": {"elbow_flexion_deg": [0, 155]}
+}

@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -9,11 +8,25 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private InputActionReference moveAction;
     private Vector2 moveInput;
+    private Vector2 pickupTarget;
+    private bool pickupStep;
+
+    public void MoveForPickup(Vector2 target)
+    {
+        pickupTarget = target;
+        pickupStep = true;
+    }
+
+    public void EndPickupStep()
+    {
+        pickupStep = false;
+    }
     [SerializeField]
-    private float speed;
+    private float speed = 5f;
     void Start()
     {
-        speed = 5f;
+        if (speed <= 0f)
+            speed = 5f;
     }
 
 
@@ -24,7 +37,9 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = moveInput * speed;
+        rb.linearVelocity = pickupStep
+            ? Vector2.ClampMagnitude((pickupTarget - rb.position) / Time.fixedDeltaTime, Mathf.Min(speed, 2.7f))
+            : moveInput * speed;
     }
 
     void Awake()
